@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true, format: URI::MailTo::EMAIL_REGEXP, uniqueness: true
   validates :token, presence: true, length: { is: 36 }, uniqueness: true
-  validates :password_digest, presence: true, length: { is: 64 }
+  validates :password_digest, presence: true, length: { is: 64 } # how do you implement passwords - bcrypt handles validation
 
   after_create :create_default_todo_list
   after_commit :send_welcome_email, on: :create

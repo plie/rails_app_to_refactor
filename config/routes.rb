@@ -5,14 +5,14 @@ Rails.application.routes.draw do
 
   resource :user, only: [:show, :destroy]
 
-  resources :todos do
+  resources :todos do # recommend only :index and :create to avoid duplication
     member do
       put 'complete'
       put 'incomplete'
     end
   end
 
-  resources :todo_lists do
+  resources :todo_lists do # recommend shallow: true to avoid duplicated resources
     resources :todos do
       member do
         put 'complete'
