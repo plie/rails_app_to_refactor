@@ -8,12 +8,12 @@ class TodoList < ApplicationRecord
   scope :default, -> { where(default: true) }
   scope :non_default, -> { where(default: false) }
 
-  scope :order_by, ->(params) {
+  scope :order_by, ->(params) { # can extract this and make reusable
     order = params[:order]&.strip&.downcase == 'asc' ? :asc : :desc
 
     sort_by = params[:sort_by]&.strip&.downcase
 
-    column_name = column_names.excluding('id', 'user_id').include?(sort_by) ? sort_by : 'id'
+    column_name = column_names.excluding('id', 'user_id').include?(sort_by) ? sort_by : 'id' # scope uses good protection against SQL injection
 
     order(column_name => order)
   }

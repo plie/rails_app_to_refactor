@@ -18,12 +18,13 @@ class UsersController < ApplicationController
         render_json(422, user: { password_confirmation: ["doesn't match password"] })
       else
         password_digest = Digest::SHA256.hexdigest(password)
-
+        # notice not using bcrypt for password hashing. Bcrypt adds a salt and a time cost to make hacking costly (but behavior change)
+        # bcrypt would also simplify this flow - can remove the stripping, confirmation comparison and checking blanks
         user = User.new(
           name: user_params[:name],
           email: user_params[:email],
-          token: SecureRandom.uuid,
-          password_digest: password_digest
+          token: SecureRandom.uuid, # token viewable in plain site - better to be hashed
+          password_digest: password_digest # not yet using password - might not be needed if the client already knows the user
         )
 
         if user.save
